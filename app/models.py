@@ -19,6 +19,13 @@ class Item(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'completed': self.completed
+        }
+
     @staticmethod
     def get_all():
         return Item.query.all()
