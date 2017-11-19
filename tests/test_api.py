@@ -42,9 +42,7 @@ class APITestCase(unittest.TestCase):
         self.assertEqual(resp.status_code, 201)
         item = json.loads(resp.data)
         resp = self.client.delete(self.base_url +
-                                  'items/{}'.format(item['id']),
-                                  data=json.dumps(item),
-                                  content_type='application/json')
+                                  'items/{}'.format(item['id']))
         self.assertEqual(resp.status_code, 200)
         resp = self.client.get(self.base_url + 'items')
         self.assertEqual(resp.status_code, 200)
