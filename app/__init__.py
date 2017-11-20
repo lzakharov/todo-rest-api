@@ -30,6 +30,19 @@ def create_app(config_name):
         response = jsonify(item.to_dict())
         return make_response(response), 201
 
+    @app.route('/todo/api/v1.0/items/<int:id>', methods=['PUT'])
+    def update_item(id):
+        item = Item.query.filter_by(id=id).first()
+        if not item:
+            abort(404)
+        data = request.get_json()
+        if not data or not data['name']:
+            abort(400)
+        item.name = data['name']
+        item.save()
+        response = jsonify(item.to_dict())
+        return make_response(response), 200
+
     @app.route('/todo/api/v1.0/items/<int:id>', methods=['DELETE'])
     def delete_item(id):
         item = Item.query.filter_by(id=id).first()
