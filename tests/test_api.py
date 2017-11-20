@@ -35,6 +35,22 @@ class APITestCase(unittest.TestCase):
         items = json.loads(resp.data)
         self.assertEqual(items[0]['name'], self.item['name'])
 
+    def test_api_can_update_item(self):
+        resp = self.client.post(self.base_url + 'items',
+                                data=json.dumps(self.item),
+                                content_type='application/json')
+        self.assertEqual(resp.status_code, 201)
+        item = json.loads(resp.data)
+        item['name'] = 'Write song'
+        resp = self.client.put(self.base_url + 'items/{}'.format(item['id']),
+                               data=json.dumps(item),
+                               content_type='application/json')
+        self.assertEqual(resp.status_code, 200)
+        resp = self.client.get(self.base_url + 'items')
+        self.assertEqual(resp.status_code, 200)
+        items = json.loads(resp.data)
+        self.assertEqual(items[0]['name'], item['name'])
+
     def test_api_can_delete_item(self):
         resp = self.client.post(self.base_url + 'items',
                                 data=json.dumps(self.item),
